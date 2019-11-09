@@ -1,0 +1,5 @@
+2019-11-09.15:12:21 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsrt:21  批量新增用户成功
+2019-11-09.15:13:32 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsrt:21  批量新增用户成功
+2019-11-09.15:14:56 ERROR [main] com.scs.web.blog.util.DbUtil.getConnection:60  2019-11-09T15:14:56.718483数据库连接失败
+2019-11-09.15:15:37 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsrt:20  批量新增用户成功
+2019-11-09.15:25:54 ERROR [main] com.scs.web.blog.dao.UserDaoTest.batchInsrt:23  批量新增用户出现异常
