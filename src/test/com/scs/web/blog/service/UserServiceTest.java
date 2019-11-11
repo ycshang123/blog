@@ -14,6 +14,6 @@ public class UserServiceTest {
     public void signIn() {
         UserDto userDto = new UserDto("13923554302","bfa010ab6c01e42b2e86aa0e26f21d4f");
         Map<String,Object> map = userService.signIn(userDto);
-        System.out.println(map);
+        System.out.println(map.get("data"));
     }
 }

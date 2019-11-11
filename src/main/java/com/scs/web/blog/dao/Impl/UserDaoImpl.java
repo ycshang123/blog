@@ -18,7 +18,7 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     @Override
-    public int[] batchInsrt(List<User> userList) throws SQLException {
+    public int[] batchInsert(List<User> userList) throws SQLException {
         Connection connection = DbUtil.getConnection();
          String sql = "INSERT INTO t_user (mobile,password,nickname,avatar,gender,birthday,introduction,create_time) VALUES (?,?,?,?,?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);

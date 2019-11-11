@@ -13,9 +13,9 @@ public class UserDaoTest {
     private UserDao userDao = DaoFactory.getUserDaoInstance();
 
     @Test
-    public void batchInsrt() {
+    public void batchInsert() {
             try {
-                int[] result = userDao.batchInsrt(JSoupSpider.getUsers());
+                int[] result = userDao.batchInsert(JSoupSpider.getUsers());
                 if(result.length != 0){
                     logger.info("批量新增用户成功");
                 }

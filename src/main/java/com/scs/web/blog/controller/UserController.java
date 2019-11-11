@@ -8,6 +8,7 @@ package com.scs.web.blog.controller;/*@ClassName UserController
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.scs.web.blog.domain.UserDto;
+import com.scs.web.blog.entity.User;
 import com.scs.web.blog.factory.ServiceFactory;
 import com.scs.web.blog.service.UserService;
 import com.scs.web.blog.util.Message;
@@ -42,6 +43,7 @@ public class UserController extends HttpServlet {
         Gson gson = new GsonBuilder().create();
         UserDto userDto = gson.fromJson(stringBuilder.toString(),UserDto.class);
         Map<String,Object> map = userService.signIn(userDto);
+        logger.info(map.get("data").toString());
         String msg =(String) map.get("msg");
         ResponseObject ro;
         if (msg.equals(Message.SIGN_IN_SUCCESS)) {
@@ -52,6 +54,12 @@ public class UserController extends HttpServlet {
         PrintWriter out = resp.getWriter();
         out.print(gson.toJson(ro));
         out.close();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter out = resp.getWriter();
+        out.print("你好");
     }
 
     @Override

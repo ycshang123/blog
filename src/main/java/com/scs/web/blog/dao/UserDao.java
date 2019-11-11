@@ -14,7 +14,7 @@ public interface UserDao {
     /*
     * 批量插入用户
     * */
-    int[] batchInsrt(List<User> userList) throws SQLException;
+    int[] batchInsert(List<User> userList) throws SQLException;
     /*
     * 根据手机号查找用户
     * */

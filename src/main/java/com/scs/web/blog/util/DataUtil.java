@@ -18,17 +18,24 @@ public class DataUtil {
     public static  String getMobile(){
         StringBuilder stringBuilder = new StringBuilder("139");
         Random random = new Random();
+            //生成数字的位数
         for(int i =0;i<8;i++){
+            //随机生成数字的范围
             int number = random.nextInt(10);
+            //自动在后面追加
             stringBuilder.append(number);
         }
         return stringBuilder.toString();
     }
 
+    /**
+     *
+     * @return
+     */
     public  static  String getPassword(){
         StringBuilder password = new StringBuilder();
         Random random = new Random();
-        for(int i =0;i<6;i++){
+        for(int i = 0;i<6;i++){
             int number = random.nextInt(6);
             password.append(number);
         }
@@ -54,7 +61,7 @@ public class DataUtil {
 
 //    public static void main(String[] args) {
 //        for(int i = 0;i<10;i++) {
-//            System.out.println(DataUtil.getBirthday());
+//            System.out.println(DataUtil.getArticleTime());
 //        }
-  //  }
+//    }
 }
