@@ -19,4 +19,9 @@ public interface UserDao {
     * 根据手机号查找用户
     * */
     User findUserByMobile(String mobile) throws  SQLException;
+    /*
+    * 获取作者
+    * */
+    List<User> sellectAll() throws  SQLException;
+
 }

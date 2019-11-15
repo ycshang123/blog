@@ -24,7 +24,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/article")
+@WebServlet(urlPatterns = "/api/article")
 public class AricleController extends HttpServlet {
     ArticleService articleService = ServiceFactory.getArticleServiceInstance();
     private static Logger logger = LoggerFactory.getLogger(AricleController.class);

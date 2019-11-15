@@ -30,8 +30,8 @@ public class JSoupSpider {
     public static List<Article> getArticle(){
         Document document = null;
         List<Article> articleList = new ArrayList<>(100);
-        int j =0;
-        for(int i = 0 ;i<180 ;i++){
+        int i,j =0;
+        for(  i = 0 ;i<=180 ;i++){
             try {
                 document = Jsoup.connect("https://book.douban.com/review/best?start="+i).get();
             } catch (IOException e) {
@@ -51,20 +51,19 @@ public class JSoupSpider {
                     article.setPublishtime(Timestamp.valueOf(header.child(2).text()).toLocalDateTime());
                 }
                 article.setTitle(body.child(0).text());
-                article.setContent(body.child(1).child(0).text());
+                article.setIntro(body.child(1).child(0).text());
                 article.setLikes(Integer.valueOf(body.child(3).child(0).child(1).text()));
                 String comments = body.child(3).child(2).text();
                 int length = comments.length();
                 String number = comments.substring(0,length-2);
                 article.setComments(Integer.valueOf(number));
                 article.setDiamond(new Random().nextInt(100));
+                article.setUserid(DataUtil.getUserId());
                 articleList.add(article);
             });
             j++;
-            i = j*2*10;
+            i = 20*j;
         }
-
-
             return  articleList;
     }
 
@@ -90,10 +89,13 @@ public class JSoupSpider {
                 user.setNickname(linkChildren.get(1).text());
                 user.setIntroduction(linkChildren.get(2).text());
                 user.setBirthday(DataUtil.getBirthday());
-                user.setCreateTime(LocalDateTime.now());
+                user.setCreateTime(DataUtil.getCreateTime());
+                user.setFollows(DataUtil.getFollows());
                 userList.add(user);
             });
         }
         return userList;
     }
+
+
 }

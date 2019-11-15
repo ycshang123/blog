@@ -22,7 +22,8 @@ public class ArticleDaoTest {
                 logger.info("批量图书增加成功");
             }
         } catch (SQLException e) {
-            logger.error("批量图书增加出现异常");
+            e.printStackTrace();
+//            logger.error("批量图书增加出现异常");
         }
     }
 }

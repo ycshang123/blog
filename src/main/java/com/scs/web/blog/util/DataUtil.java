@@ -9,6 +9,7 @@ package com.scs.web.blog.util;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 public class DataUtil {
@@ -47,7 +48,6 @@ public class DataUtil {
         String[] genders = new String[]{"男","女"};
         Random random = new Random();
         int index = random.nextInt(2);
-        //当前日期的前bound天；
         return  genders[index];
     }
 
@@ -58,10 +58,26 @@ public class DataUtil {
         return  now.minusDays(bound);
 
     }
+    public static LocalDateTime getCreateTime(){
+        LocalDateTime now = LocalDateTime.now();
+        Random random  = new Random();
+        int bound = random.nextInt(6666);
+        return now.minusDays(bound);
+    }
+    public static int getFollows(){
+        Random random = new Random();
+        int number = random.nextInt(1000);
+        return number;
+    }
+    public static int getUserId(){
+        Random random = new Random();
+        int number = random.nextInt(72);
+        return number;
+    }
 
 //    public static void main(String[] args) {
 //        for(int i = 0;i<10;i++) {
-//            System.out.println(DataUtil.getArticleTime());
+//            System.out.println(getUserId());
 //        }
 //    }
 }

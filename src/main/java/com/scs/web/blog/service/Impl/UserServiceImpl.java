@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
@@ -40,5 +42,17 @@ public class UserServiceImpl implements UserService {
             map.put("msg", "手机号不存在");
         }
         return map;
+    }
+
+    @Override
+    public List<User> listUser() {
+    List<User> userList = new ArrayList<>();
+        try {
+            userList = userDao.sellectAll();
+        } catch (SQLException e) {
+            logger.error("用户获取信息失败");
+        }
+        logger.info("作者信息获取成功");
+        return userList;
     }
 }

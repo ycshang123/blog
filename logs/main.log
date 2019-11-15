@@ -1,1 +1,2 @@
-2019-11-12.07:50:45 INFO  [main] com.scs.web.blog.service.Impl.ArticleServiceImpl.listArticle:30  查询成功
+2019-11-14.19:29:50 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:22  批量图书增加成功
+2019-11-14.19:31:40 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:22  批量图书增加成功

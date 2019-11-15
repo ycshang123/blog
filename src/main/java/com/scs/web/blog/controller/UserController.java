@@ -24,13 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/sign-in")
+@WebServlet(urlPatterns = "/api/sign-in")
 public class UserController extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService = ServiceFactory.getUserServiceInstance();
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
@@ -55,15 +55,25 @@ public class UserController extends HttpServlet {
         out.print(gson.toJson(ro));
         out.close();
     }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-        out.print("你好");
-    }
-
     @Override
     public void init() throws ServletException {
         logger.info("UserController初始化");
     }
-}
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<User> userList = userService.listUser();
+        ResponseObject ro = null;
+        if(resp.getStatus() ==200){
+            ro = ResponseObject.success(200,"成功",userList);
+        }else{
+            ro = ResponseObject.error(resp.getStatus(),"失败");
+        }
+        PrintWriter out = resp.getWriter();
+        Gson gson = new GsonBuilder().create();
+        out.print(gson.toJson(ro));
+        out.close();
+    }
+
+    }
+

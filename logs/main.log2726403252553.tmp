@@ -1,0 +1,10 @@
+2019-11-14.15:02:23 ERROR [main] com.scs.web.blog.util.JSoupSpider.getUsers:76  用户信息网站连接失败
+2019-11-14.15:02:24 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsert:20  批量新增用户成功
+2019-11-14.15:09:25 ERROR [main] com.scs.web.blog.util.JSoupSpider.getUsers:76  用户信息网站连接失败
+2019-11-14.15:11:34 ERROR [main] com.scs.web.blog.util.JSoupSpider.getUsers:76  用户信息网站连接失败
+2019-11-14.15:11:37 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsert:20  批量新增用户成功
+2019-11-14.15:23:30 INFO  [main] com.scs.web.blog.dao.UserDaoTest.batchInsert:20  批量新增用户成功
+2019-11-14.15:30:37 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
+2019-11-14.15:31:41 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
+2019-11-14.15:35:27 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
+2019-11-14.15:42:07 ERROR [main] com.scs.web.blog.util.JSoupSpider.getArticle:38  豆瓣网站连接失败

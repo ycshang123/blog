@@ -44,7 +44,7 @@
             <fileNamePattern>${log.dir}/error.%d{yyyy-MM-dd-HH}.log.gz</fileNamePattern>
         </rollingPolicy>
     </appender>
-//
+
     <logger name="com.scs.web.blog">
         <level value="INFO" />
         <appender-ref ref="STDOUT" />

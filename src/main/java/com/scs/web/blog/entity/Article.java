@@ -14,11 +14,14 @@ import java.time.LocalDateTime;
 public class Article {
     private long id;
     private String title;
-    private String content;
+    private String intro;
     private String cover;
     private Integer diamond;
     private String nickname;
     private Integer comments;
     private Integer likes;
     private LocalDateTime publishtime;
+    private int userid;
+    private int tpyeid;
+    private String content;
 }

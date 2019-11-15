@@ -2,3 +2,5 @@
 2019-11-14.16:25:42 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
 2019-11-14.16:38:13 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
 2019-11-14.16:39:48 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
+2019-11-14.16:47:12 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:22  批量图书增加成功
+2019-11-14.16:53:41 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:22  批量图书增加成功

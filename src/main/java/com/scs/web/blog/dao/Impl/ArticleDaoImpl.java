@@ -22,19 +22,20 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public int[] batchInsert(List<Article> articleList) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "INSERT INTO t_article VALUES (NULL,?,?,?,?,?,?,?,?) ";
+        String sql = "INSERT INTO t_article(title,intro,cover,diamond,nickname,comments,likes,publish_time,user_id) VALUES (?,?,?,?,?,?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         connection.setAutoCommit(false);
         articleList.forEach(article -> {
             try {
                 pstmt.setString(1,article.getTitle());
-                pstmt.setString(2,article.getContent());
+                pstmt.setString(2,article.getIntro());
                 pstmt.setString(3,article.getCover());
                 pstmt.setInt(4,article.getDiamond());
                 pstmt.setString(5,article.getNickname());
                 pstmt.setInt(6,article.getComments());
                 pstmt.setInt(7,article.getLikes());
                 pstmt.setObject(8,article.getPublishtime());
+                pstmt.setInt(9,article.getUserid());
                 pstmt.addBatch();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -56,16 +57,15 @@ public class ArticleDaoImpl implements ArticleDao {
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()){
             Article article = new Article();
-            article.setId(rs.getInt("id"));
             article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("content"));
+            article.setContent(rs.getString("intro"));
             article.setCover(rs.getString("cover"));
             article.setDiamond(rs.getInt("diamond"));
             article.setNickname(rs.getString("nickname"));
             article.setComments(rs.getInt("comments"));
             article.setLikes(rs.getInt("likes"));
             article.setPublishtime(rs.getTimestamp("publish_time").toLocalDateTime());
-
+            article.setUserid(rs.getInt("user_id"));
             articleList.add(article);
         }
         return articleList;

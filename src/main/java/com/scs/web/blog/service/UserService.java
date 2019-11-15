@@ -7,7 +7,9 @@ package com.scs.web.blog.service;
  **/
 
 import com.scs.web.blog.domain.UserDto;
+import com.scs.web.blog.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserService {
@@ -15,4 +17,8 @@ public interface UserService {
     * 登录功能
     * */
     Map<String,Object> signIn(UserDto userDto);
+    /*
+    *获取作者接口
+    * */
+    List<User>  listUser();
 }
