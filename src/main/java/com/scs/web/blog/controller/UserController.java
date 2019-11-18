@@ -24,15 +24,59 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/api/sign-in")
+@WebServlet(urlPatterns = "/api/*")
 public class UserController extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService = ServiceFactory.getUserServiceInstance();
+
+    /**
+     * 根据请求地址，取得最后的内容，结合请求方法来决定分发到不同的方法
+     *
+     * @param uri
+     * @return
+     */
+    private String getPatten(String uri) {
+        int len = "/api".length();
+        return uri.substring(len);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
+        while((line = reader.readLine())!= null){
+            stringBuilder.append(line);
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String patten = getPatten(req.getRequestURI());
+        switch (patten){
+            case "/sign-in":
+                signIn(req,resp);
+                break;
+            case "/check":
+                check(req,resp);
+                break;
+            case "/sign-up":
+                signUp(req,resp);
+                break;
+            default:
+        }
+    }
+
+    private void check(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+
+
+    protected void signIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         StringBuilder stringBuilder = new StringBuilder();
         String line = null;
@@ -59,20 +103,28 @@ public class UserController extends HttpServlet {
     public void init() throws ServletException {
         logger.info("UserController初始化");
     }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<User> userList = userService.listUser();
-        ResponseObject ro = null;
-        if(resp.getStatus() ==200){
-            ro = ResponseObject.success(200,"成功",userList);
-        }else{
-            ro = ResponseObject.error(resp.getStatus(),"失败");
+    private  void signUp(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+        BufferedReader reader = req.getReader();
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
+        while((line = reader.readLine())!=null){
+          stringBuilder.append(line);
         }
-        PrintWriter out = resp.getWriter();
+        logger.info("注册用户信息"+stringBuilder.toString());
         Gson gson = new GsonBuilder().create();
+        UserDto userDto = gson.fromJson(stringBuilder.toString(),UserDto.class);
+        Map<String,Object> map = userService.signUp(userDto);
+        String msg = (String)map.get("msg");
+        ResponseObject ro;
+        if(msg.equals("注册成功")){
+            ro= ResponseObject.success(200,msg);
+        }else {
+            ro = ResponseObject.success(200, msg);
+        }
+        PrintWriter out =resp.getWriter();
         out.print(gson.toJson(ro));
         out.close();
+
     }
 
     }

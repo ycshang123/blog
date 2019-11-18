@@ -22,7 +22,7 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public int[] batchInsert(List<Article> articleList) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "INSERT INTO t_article(title,intro,cover,diamond,nickname,comments,likes,publish_time,user_id) VALUES (?,?,?,?,?,?,?,?,?) ";
+        String sql = "INSERT INTO t_article(title,intro,cover,diamond,nickname,comments,likes,publish_time,user_id,content) VALUES (?,?,?,?,?,?,?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         connection.setAutoCommit(false);
         articleList.forEach(article -> {
@@ -36,6 +36,7 @@ public class ArticleDaoImpl implements ArticleDao {
                 pstmt.setInt(7,article.getLikes());
                 pstmt.setObject(8,article.getPublishtime());
                 pstmt.setInt(9,article.getUserid());
+                pstmt.setString(10,article.getContent());
                 pstmt.addBatch();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -58,7 +59,7 @@ public class ArticleDaoImpl implements ArticleDao {
         while (rs.next()){
             Article article = new Article();
             article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("intro"));
+            article.setIntro(rs.getString("intro"));
             article.setCover(rs.getString("cover"));
             article.setDiamond(rs.getInt("diamond"));
             article.setNickname(rs.getString("nickname"));
@@ -66,6 +67,7 @@ public class ArticleDaoImpl implements ArticleDao {
             article.setLikes(rs.getInt("likes"));
             article.setPublishtime(rs.getTimestamp("publish_time").toLocalDateTime());
             article.setUserid(rs.getInt("user_id"));
+            article.setContent(rs.getString("content"));
             articleList.add(article);
         }
         return articleList;

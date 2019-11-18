@@ -7,9 +7,11 @@ package com.scs.web.blog.dao.Impl;/*@ClassName UserDaoImpl
 
 import ch.qos.logback.core.db.dialect.DBUtil;
 import com.scs.web.blog.dao.UserDao;
+import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.util.DbUtil;
 
+import javax.swing.plaf.synth.ColorType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,13 +65,18 @@ public class UserDaoImpl implements UserDao {
             user.setNickname(rs.getString("nickname"));
             user.setAvatar(rs.getString("avatar"));
             user.setGender(rs.getString("gender"));
-            user.setBirthday(rs.getDate("birthday").toLocalDate());
+            if(rs.getDate("birthday")!=null){
+                user.setBirthday(rs.getDate("birthday").toLocalDate());
+            }else{
+                user.setBirthday(null);
+            }
             user.setIntroduction(rs.getString("introduction"));
             user.setAddress(rs.getString("address"));
             user.setFollows(rs.getShort("follows"));
             user.setFans(rs.getShort("fans"));
             user.setArticles(rs.getShort("articles"));
-            user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
+
+//            user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
             user.setStatus(rs.getShort("status"));
         }
         return user;
@@ -105,5 +112,18 @@ public class UserDaoImpl implements UserDao {
 
         }
 
+    @Override
+    public int insert(UserDto userDto) throws SQLException {
+     Connection connection = DbUtil.getConnection();
+     connection.setAutoCommit(false);
+     String sql ="INSERT INTO t_user(mobile,password) VALUES(?,?)";
+     PreparedStatement pstmt = connection.prepareStatement(sql);
+     pstmt.setString(1,userDto.getMobile());
+     pstmt.setString(2,userDto.getPassword());
+     int n = pstmt.executeUpdate();
+     connection.commit();
+     return n;
     }
+
+}
 

@@ -5,6 +5,7 @@ package com.scs.web.blog.dao;/*@ClassName UserDao
  *@Version 1.0
  **/
 
+import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.entity.User;
 
 import java.sql.SQLException;
@@ -23,5 +24,10 @@ public interface UserDao {
     * 获取作者
     * */
     List<User> sellectAll() throws  SQLException;
+    /*
+    * 注册用户
+    * */
+    int insert(UserDto userDto) throws  SQLException;
+
 
 }

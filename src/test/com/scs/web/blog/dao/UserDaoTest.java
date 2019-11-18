@@ -1,6 +1,7 @@
 package com.scs.web.blog.dao;
 
 import com.scs.web.blog.dao.Impl.UserDaoImpl;
+import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.factory.DaoFactory;
 import com.scs.web.blog.service.Impl.UserServiceImpl;
@@ -37,5 +38,17 @@ public class UserDaoTest {
             System.out.println("no");
         }
 
+    }
+
+
+    @Test
+    public void insert() throws SQLException {
+        UserDto userDto = new UserDto("147258368","147258369");
+        int i = DaoFactory.getUserDaoInstance().insert(userDto);
+        if(i!=0){
+            System.out.println("ok");
+        }else{
+            System.out.println("no");
+        }
     }
 }

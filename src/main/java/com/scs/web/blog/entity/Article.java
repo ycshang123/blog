@@ -24,4 +24,5 @@ public class Article {
     private int userid;
     private int tpyeid;
     private String content;
+
 }

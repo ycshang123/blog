@@ -51,6 +51,16 @@ public class JSoupSpider {
                     article.setPublishtime(Timestamp.valueOf(header.child(2).text()).toLocalDateTime());
                 }
                 article.setTitle(body.child(0).text());
+                String articleUrl = body.child(0).child(0).attr("href");
+                Document document1 = null;
+                try {
+                    document1 = Jsoup.connect(articleUrl).get();
+                } catch (IOException e) {
+                    logger.error("连接失败");
+                }
+                Element articleElement = document1.getElementById("link-report").child(0);
+                System.out.println(articleElement.html());
+                article.setContent(articleElement.html());
                 article.setIntro(body.child(1).child(0).text());
                 article.setLikes(Integer.valueOf(body.child(3).child(0).child(1).text()));
                 String comments = body.child(3).child(2).text();

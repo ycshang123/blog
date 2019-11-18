@@ -1,4 +1,5 @@
-package com.scs.web.blog.service.Impl;/*@ClassName UserServiceImpl
+package com.scs.web.blog.service.Impl;
+/*@ClassName UserServiceImpl
  *@Description:todo
  *@author yc_shang
  *@Date2019/11/9
@@ -10,6 +11,7 @@ import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.factory.DaoFactory;
 import com.scs.web.blog.service.UserService;
+import com.scs.web.blog.util.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
-    private  UserDao userDao = DaoFactory.getUserDaoInstance() ;
+    private UserDao userDao = DaoFactory.getUserDaoInstance();
     private static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     @Override
     public Map<String, Object> signIn(UserDto userDto) {
         User user = null;
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> listUser() {
-    List<User> userList = new ArrayList<>();
+        List<User> userList = new ArrayList<>();
         try {
             userList = userDao.sellectAll();
         } catch (SQLException e) {
@@ -54,5 +57,23 @@ public class UserServiceImpl implements UserService {
         }
         logger.info("作者信息获取成功");
         return userList;
+    }
+
+    @Override
+    public Map<String, Object> signUp(UserDto userDto) {
+        Map<String, Object> map = new HashMap<>();
+        int i = 0;
+        try {
+            i = DaoFactory.getUserDaoInstance().insert(userDto);
+        } catch (SQLException e) {
+            logger.error("注册失败");
+        }
+        if (i == 1) {
+          map.put("msg","注册成功");
+        } else {
+           map.put("msg","注册失败");
+        }
+
+        return map;
     }
 }
