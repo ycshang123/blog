@@ -26,7 +26,7 @@ public class CharacterFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=utf-8");
         response.setCharacterEncoding("utf-8");
-        filterChain.doFilter(servletRequest, servletResponse);
+       filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

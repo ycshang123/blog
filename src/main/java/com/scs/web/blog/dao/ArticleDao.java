@@ -5,6 +5,7 @@ package com.scs.web.blog.dao;/*@ClassName ArticleDao
  *@Version 1.0
  **/
 
+import com.scs.web.blog.domain.Vo.ArticleVo;
 import com.scs.web.blog.entity.Article;
 
 
@@ -22,5 +23,9 @@ public interface ArticleDao {
     查找图书
      */
     List<Article> selectAll() throws SQLException;
+    /*
+    * 根据id查找图书
+    * */
+    ArticleVo getArticle(long id) throws SQLException;
 
 }

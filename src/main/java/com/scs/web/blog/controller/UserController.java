@@ -44,15 +44,6 @@ public class UserController extends HttpServlet {
         return uri.substring(len);
     }
 
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        BufferedReader reader = req.getReader();
-        StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
-        while((line = reader.readLine())!= null){
-            stringBuilder.append(line);
-        }
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

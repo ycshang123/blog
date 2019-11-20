@@ -1,5 +1,7 @@
 package com.scs.web.blog.dao;
 
+import com.scs.web.blog.domain.Vo.ArticleVo;
+import com.scs.web.blog.entity.Article;
 import com.scs.web.blog.factory.DaoFactory;
 import com.scs.web.blog.util.JSoupSpider;
 import org.junit.Test;
@@ -25,6 +27,12 @@ public class ArticleDaoTest {
             e.printStackTrace();
 //            logger.error("批量图书增加出现异常");
         }
+    }
+
+    @Test
+    public void getArticle() throws SQLException {
+        ArticleVo articleVo = articleDao.getArticle(1);
+        System.out.println(articleVo.getAvatar());
     }
 }
 
