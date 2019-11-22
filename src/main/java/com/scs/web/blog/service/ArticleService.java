@@ -6,8 +6,8 @@ package com.scs.web.blog.service;/*@ClassName ArticleService
  **/
 
 import com.scs.web.blog.entity.Article;
+import com.scs.web.blog.util.Result;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface ArticleService {
@@ -15,4 +15,8 @@ public interface ArticleService {
     获取所有图书信息
      */
     List<Article> listArticle() ;
+    /*
+    * 获取文章详情
+    * */
+    Result getArticle(long id);
 }

@@ -17,7 +17,7 @@ public class Article {
     private String intro;
     private String cover;
     private Integer diamond;
-    private String nickname;
+    private String bookname;
     private Integer comments;
     private Integer likes;
     private LocalDateTime publishtime;

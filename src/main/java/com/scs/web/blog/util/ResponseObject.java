@@ -2,6 +2,8 @@ package com.scs.web.blog.util;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author ke
  * @ClassName ResponseObject
@@ -11,6 +13,7 @@ import lombok.Data;
  **/
 @Data
 public class ResponseObject {
+    private static final long serialVersionUID = -3948389268046368059L;
     private Integer code;
     private String msg;
     private Object data;

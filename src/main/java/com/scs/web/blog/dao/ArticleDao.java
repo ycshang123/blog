@@ -24,6 +24,10 @@ public interface ArticleDao {
      */
     List<Article> selectAll() throws SQLException;
     /*
+    * 查询热门文章
+    * */
+    List<ArticleVo> selectHotArticles() throws  SQLException;
+    /*
     * 根据id查找图书
     * */
     ArticleVo getArticle(long id) throws SQLException;

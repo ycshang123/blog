@@ -17,4 +17,8 @@ public class ArticleServiceTest {
         System.out.println(articleService.listArticle().size());
 
     }
+
+    @Test
+    public void getArticle() {
+    }
 }

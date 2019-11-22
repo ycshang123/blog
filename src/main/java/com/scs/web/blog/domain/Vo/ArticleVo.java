@@ -9,12 +9,25 @@ package com.scs.web.blog.domain.Vo;
 import com.scs.web.blog.entity.Article;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class ArticleVo {
     private Article article;
+    private long id;
+    private String title;
+    private String intro;
+    private String cover;
+    private Integer diamond;
+    private String bookname;
+    private Integer comments;
+    private Integer likes;
+    private LocalDateTime publishtime;
+    private int userid;
+    private int tpyeid;
+    private String content;
     private String nickname;
     private String avatar;
-    private Long id;
 //    private String topicName;
 //    private String logo;
 }

@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,6 +26,9 @@ public class CodeController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //生成验证码
         String code =StringUtil.getRandomString(4);
+        HttpSession session = req.getSession();
+        System.out.println(session.getId());
+        session.setAttribute("code",code);
         //生成图片
         BufferedImage img = ImageUtil.getImage(code,200,100);
         //

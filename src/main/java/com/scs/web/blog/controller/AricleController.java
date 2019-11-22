@@ -11,6 +11,7 @@ import com.scs.web.blog.entity.Article;
 import com.scs.web.blog.factory.ServiceFactory;
 import com.scs.web.blog.service.ArticleService;
 import com.scs.web.blog.util.ResponseObject;
+import com.scs.web.blog.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,12 +25,42 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(urlPatterns = "/api/article")
+@WebServlet(urlPatterns = {"/api/article","/api/article/*"})
 public class AricleController extends HttpServlet {
     ArticleService articleService = ServiceFactory.getArticleServiceInstance();
     private static Logger logger = LoggerFactory.getLogger(AricleController.class);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI().trim();
+        if("/api/article".equals(uri)){
+            String page = req.getParameter("page");
+            if(page !=null){
+                getArticlesByPage(req,resp);
+            }else {
+                getAllArticle(req,resp);
+            }
+        }else {
+            getArticle(req,resp);
+        }
+    }
+
+    private void getArticle(HttpServletRequest req, HttpServletResponse resp)throws  ServletException, IOException {
+        String  info = req.getPathInfo().trim();
+        //取得路径参数
+        String id = info.substring(info.indexOf("/")+1);
+        Result result =articleService.getArticle(Long.parseLong(id));
+        Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+
+    }
+
+    private void getArticlesByPage(HttpServletRequest req, HttpServletResponse resp) {
+    }
+
+    protected void getAllArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Article> articleList = articleService.listArticle();
         ResponseObject ro = null;
     if(resp.getStatus() ==200){

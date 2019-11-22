@@ -31,8 +31,8 @@ public class ArticleDaoTest {
 
     @Test
     public void getArticle() throws SQLException {
-        ArticleVo articleVo = articleDao.getArticle(1);
-        System.out.println(articleVo.getAvatar());
+        ArticleVo articleVo = articleDao.getArticle(3);
+        System.out.println(articleVo);
     }
 }
 
