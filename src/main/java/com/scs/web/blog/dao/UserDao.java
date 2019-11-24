@@ -6,6 +6,7 @@ package com.scs.web.blog.dao;/*@ClassName UserDao
  **/
 
 import com.scs.web.blog.domain.UserDto;
+import com.scs.web.blog.domain.Vo.UserVo;
 import com.scs.web.blog.entity.User;
 
 import java.sql.SQLException;
@@ -28,6 +29,12 @@ public interface UserDao {
     * 注册用户
     * */
     int insert(UserDto userDto) throws  SQLException;
-
-
+    /*
+    * 查询热门用户
+    * */
+    List<User> selectHotUsers() throws  SQLException;
+    /*
+    * 根据id查询用户
+    * */
+    UserVo getUser(long id) throws SQLException;
 }

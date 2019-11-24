@@ -12,6 +12,11 @@ import java.util.List;
 
 public interface ArticleService {
     /*
+    * 获取热门文章
+    *
+    * */
+    Result getHotArticles();
+    /*
     获取所有图书信息
      */
     List<Article> listArticle() ;

@@ -41,14 +41,4 @@ public class UserDaoTest {
     }
 
 
-    @Test
-    public void insert() throws SQLException {
-        UserDto userDto = new UserDto("147258368","147258369");
-        int i = DaoFactory.getUserDaoInstance().insert(userDto);
-        if(i!=0){
-            System.out.println("ok");
-        }else{
-            System.out.println("no");
-        }
-    }
 }

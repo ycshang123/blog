@@ -1,4 +1,2 @@
-2019-11-14.16:24:50 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
-2019-11-14.16:25:42 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
-2019-11-14.16:38:13 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
-2019-11-14.16:39:48 ERROR [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:25  批量图书增加出现异常
+2019-11-24.09:55:40 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常
+2019-11-24.09:56:48 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常

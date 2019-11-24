@@ -4,13 +4,10 @@ package com.scs.web.blog.dao.Impl;/*@ClassName ArticleDaoImpl
  *@Date2019/11/10
  *@Version 1.0
  **/
-
-import cn.hutool.db.Db;
 import com.scs.web.blog.dao.ArticleDao;
 import com.scs.web.blog.domain.Vo.ArticleVo;
 import com.scs.web.blog.entity.Article;
-import com.scs.web.blog.entity.User;
-import com.scs.web.blog.service.Impl.ArticleServiceImpl;
+import com.scs.web.blog.util.BeanHandler;
 import com.scs.web.blog.util.DbUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +47,7 @@ public class ArticleDaoImpl implements ArticleDao {
         });
         int[] result = pstmt.executeBatch();
         connection.commit();
-        DbUtil.close(null, pstmt, connection);
+        DbUtil.close(connection,pstmt);
         return result;
     }
 
@@ -91,36 +88,9 @@ public class ArticleDaoImpl implements ArticleDao {
         PreparedStatement pstmt = connection.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
         //调用封装方法，将结果解析成List
-        List<ArticleVo> articleVoList = convert(rs);
-        
-        return null;
-    }
-
-    private List<ArticleVo> convert(ResultSet rs) {
-        List<ArticleVo> articleVoList = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                ArticleVo articleVo = new ArticleVo();
-                articleVo.setId(rs.getLong("id"));
-                articleVo.setTitle(rs.getString("title"));
-                articleVo.setIntro(rs.getString("intro"));
-                articleVo.setCover(rs.getString("cover"));
-                articleVo.setDiamond(rs.getInt("diamond"));
-                articleVo.setComments(rs.getInt("comments"));
-                articleVo.setLikes(rs.getInt("likes"));
-                articleVo.setPublishtime(rs.getTimestamp("publish_time").toLocalDateTime());
-                articleVo.setUserid(rs.getInt("user_id"));
-                articleVo.setTpyeid(rs.getInt("type_id"));
-                articleVo.setContent(rs.getString("content"));
-                articleVo.setNickname(rs.getString("nickname"));
-                articleVo.setAvatar(rs.getString("avatar"));
-                articleVoList.add(articleVo);
-            }
-        } catch (SQLException e) {
-            logger.error("文章数据结果集解析异常");
-        }
+        List<ArticleVo> articleVoList = BeanHandler.converArticle(rs);
+        DbUtil.close(connection,pstmt,rs);
         return articleVoList;
-
     }
 
     @Override
@@ -134,27 +104,9 @@ public class ArticleDaoImpl implements ArticleDao {
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setLong(1, id);
         ResultSet rs = pstmt.executeQuery();
-        ArticleVo articleVo = null;
-        if (rs.next()) {
-            Article article = new Article();
-            article.setId(rs.getLong("id"));
-            article.setTitle(rs.getString("title"));
-            article.setIntro(rs.getString("intro"));
-            article.setCover(rs.getString("cover"));
-            article.setDiamond(rs.getInt("diamond"));
-            article.setComments(rs.getInt("comments"));
-            article.setLikes(rs.getInt("likes"));
-            article.setPublishtime(rs.getTimestamp("publish_time").toLocalDateTime());
-            article.setUserid(rs.getInt("user_id"));
-            article.setTpyeid(rs.getInt("type_id"));
-            article.setContent(rs.getString("content"));
-            articleVo = new ArticleVo();
-            articleVo.setArticle(article);
-            articleVo.setNickname(rs.getString("nickname"));
-            articleVo.setAvatar(rs.getString("avatar"));
-
-        }
-       DbUtil.close(rs, pstmt, connection);
+        ArticleVo articleVo = BeanHandler.converArticle(rs).get(0);
+        rs.previous();
+        DbUtil.close(connection,pstmt,rs);
         return articleVo;
     }
 }

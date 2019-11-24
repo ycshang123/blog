@@ -21,4 +21,9 @@ public class ArticleServiceTest {
     @Test
     public void getArticle() {
     }
+
+    @Test
+    public void getHotArticles() {
+        System.out.println(articleService.getHotArticles());
+    }
 }

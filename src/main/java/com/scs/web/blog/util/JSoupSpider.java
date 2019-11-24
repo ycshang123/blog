@@ -44,7 +44,7 @@ public class JSoupSpider {
                 Element body = div.child(2);
                 Article article = new Article();
                 article.setCover(a.child(0).attr("src"));
-                article.setNickname(header.child(1).text());
+                article.setBookname(header.child(1).text());
                 if(header.children().size() == 4){
                     article.setPublishtime(Timestamp.valueOf(header.child(3).text()).toLocalDateTime());
                 }else {

@@ -37,6 +37,22 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Result getHotArticles() {
+        List<ArticleVo> articleVoList = null;
+        try {
+            articleVoList = articleDao.selectHotArticles();
+        } catch (SQLException e) {
+            e.printStackTrace();
+//            logger.error("查询热门文章出现异常");
+        }
+        if(articleVoList !=null){
+            return  Result.success(articleVoList);
+        }else {
+            return  Result.failure(ResultCode.RESULT_CODE_DATA_NONE);
+        }
+    }
+
+    @Override
     public Result getArticle(long id) {
         ArticleVo articleVo = null;
         try {
@@ -49,6 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
         }else {
             return  Result.failure(ResultCode.RESULT_CODE_DATA_NONE);
         }
+
 
     }
 }

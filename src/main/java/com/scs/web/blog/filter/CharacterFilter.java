@@ -36,6 +36,7 @@ public class CharacterFilter implements Filter {
 
     @Override
     public void destroy() {
+
         logger.info("字符集过滤器销毁");
     }
 }

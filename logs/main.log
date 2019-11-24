@@ -1,1 +1,2 @@
-2019-11-17.23:06:59 INFO  [main] com.scs.web.blog.service.Impl.UserServiceImpl.signUp:69  注册成功
+2019-11-24.09:55:40 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常
+2019-11-24.09:56:48 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常

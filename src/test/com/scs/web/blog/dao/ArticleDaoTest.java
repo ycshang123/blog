@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +34,12 @@ public class ArticleDaoTest {
     public void getArticle() throws SQLException {
         ArticleVo articleVo = articleDao.getArticle(3);
         System.out.println(articleVo);
+    }
+
+    @Test
+    public void selectHotArticles() throws SQLException {
+        List<ArticleVo> articleVoList = articleDao.selectHotArticles();
+        System.out.println(articleVoList.size());
     }
 }
 

@@ -20,7 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 
-@WebServlet(urlPatterns = "/code")
+@WebServlet(urlPatterns = "/api/code")
 public class CodeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

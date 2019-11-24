@@ -38,7 +38,7 @@ public class AricleController extends HttpServlet {
             if(page !=null){
                 getArticlesByPage(req,resp);
             }else {
-                getAllArticle(req,resp);
+                getHotArticles(req,resp);
             }
         }else {
             getArticle(req,resp);
@@ -56,6 +56,14 @@ public class AricleController extends HttpServlet {
         out.close();
 
     }
+    private  void  getHotArticles(HttpServletRequest req, HttpServletResponse resp) throws  ServletException,IOException{
+        Gson gson = new GsonBuilder().create();
+        Result result = articleService.getHotArticles();
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
 
     private void getArticlesByPage(HttpServletRequest req, HttpServletResponse resp) {
     }

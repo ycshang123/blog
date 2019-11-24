@@ -7,6 +7,8 @@ package com.scs.web.blog.domain.Vo;
  **/
 
 import com.scs.web.blog.entity.Article;
+import com.scs.web.blog.entity.Topic;
+import com.scs.web.blog.entity.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,20 +16,6 @@ import java.time.LocalDateTime;
 @Data
 public class ArticleVo {
     private Article article;
-    private long id;
-    private String title;
-    private String intro;
-    private String cover;
-    private Integer diamond;
-    private String bookname;
-    private Integer comments;
-    private Integer likes;
-    private LocalDateTime publishtime;
-    private int userid;
-    private int tpyeid;
-    private String content;
-    private String nickname;
-    private String avatar;
-//    private String topicName;
-//    private String logo;
+   private User author;
+//   private Topic topic;
 }

@@ -10,9 +10,12 @@ import com.google.gson.GsonBuilder;
 import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.factory.ServiceFactory;
+import com.scs.web.blog.listener.MySessionContext;
 import com.scs.web.blog.service.UserService;
 import com.scs.web.blog.util.Message;
 import com.scs.web.blog.util.ResponseObject;
+import com.scs.web.blog.util.Result;
+import com.scs.web.blog.util.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,14 +24,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.interfaces.RSAKey;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/api/*")
+@WebServlet(urlPatterns = {"/api/user", "/api/user/*"})
 public class UserController extends HttpServlet {
     private static Logger logger = LoggerFactory.getLogger(UserController.class);
     private UserService userService = ServiceFactory.getUserServiceInstance();
@@ -47,19 +52,12 @@ public class UserController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String patten = getPatten(req.getRequestURI());
-        switch (patten){
-            case "/sign-in":
-                signIn(req,resp);
-                break;
-            case "/check":
-                check(req,resp);
-                break;
-            case "/sign-up":
-                signUp(req,resp);
-                break;
-            default:
-        }
+       String uri = req.getRequestURI().trim();
+       if("api/user/sign-in".equals(uri)){
+           signIn(req,resp);
+       }else if("api/user/sign-up".equals(uri)){
+           signUp(req,resp);
+       }
     }
 
     private void check(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -77,18 +75,24 @@ public class UserController extends HttpServlet {
         logger.info("登陆用户信息"+stringBuilder.toString());
         Gson gson = new GsonBuilder().create();
         UserDto userDto = gson.fromJson(stringBuilder.toString(),UserDto.class);
-        Map<String,Object> map = userService.signIn(userDto);
-        logger.info(map.get("data").toString());
-        String msg =(String) map.get("msg");
-        ResponseObject ro;
-        if (msg.equals(Message.SIGN_IN_SUCCESS)) {
-            ro = ResponseObject.success(200, msg, map.get("data"));
-        } else {
-            ro = ResponseObject.success(200, msg);
-        }
-        PrintWriter out = resp.getWriter();
-        out.print(gson.toJson(ro));
-        out.close();
+        String inputCode = userDto.getCode().trim();
+
+      //从客户端请求头里带来的token
+        String sessionId = req.getHeader("Access-Token");
+        System.out.println("客户端传来的JSESSIONID"+sessionId);
+        MySessionContext myc = MySessionContext.getInstance();
+        HttpSession session = myc.getSession(sessionId);
+        String correctCode =session.getAttribute("code").toString();
+        System.out.println("正确的验证码"+correctCode);
+     PrintWriter out = resp.getWriter();
+     if(inputCode.equalsIgnoreCase(correctCode)){
+         Result result = userService.signIn(userDto);
+         out.print(gson.toJson(result));
+     }else {
+         Result result = Result.failure(ResultCode.USER_VERIFY_CODE_ERROR);
+         out.print(gson.toJson(result));
+     }
+     out.close();
     }
     @Override
     public void init() throws ServletException {

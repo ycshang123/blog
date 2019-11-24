@@ -8,7 +8,9 @@ package com.scs.web.blog.dao.Impl;/*@ClassName UserDaoImpl
 import ch.qos.logback.core.db.dialect.DBUtil;
 import com.scs.web.blog.dao.UserDao;
 import com.scs.web.blog.domain.UserDto;
+import com.scs.web.blog.domain.Vo.UserVo;
 import com.scs.web.blog.entity.User;
+import com.scs.web.blog.util.BeanHandler;
 import com.scs.web.blog.util.DbUtil;
 
 import javax.swing.plaf.synth.ColorType;
@@ -45,7 +47,7 @@ public class UserDaoImpl implements UserDao {
         });
         int[] result = pstmt.executeBatch();
         connection.commit();
-        DbUtil.close(null,pstmt,connection);
+       DbUtil.close(connection,pstmt);
         return  result;
     }
 
@@ -56,29 +58,8 @@ public class UserDaoImpl implements UserDao {
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, mobile);
         ResultSet rs = pstmt.executeQuery();
-        User user = null;
-        if (rs.next()) {
-            user = new User();
-            user.setId(rs.getLong("id"));
-            user.setMobile(rs.getString("mobile"));
-            user.setPassword(rs.getString("password"));
-            user.setNickname(rs.getString("nickname"));
-            user.setAvatar(rs.getString("avatar"));
-            user.setGender(rs.getString("gender"));
-            if(rs.getDate("birthday")!=null){
-                user.setBirthday(rs.getDate("birthday").toLocalDate());
-            }else{
-                user.setBirthday(null);
-            }
-            user.setIntroduction(rs.getString("introduction"));
-            user.setAddress(rs.getString("address"));
-            user.setFollows(rs.getShort("follows"));
-            user.setFans(rs.getShort("fans"));
-            user.setArticles(rs.getShort("articles"));
-
-//            user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
-            user.setStatus(rs.getShort("status"));
-        }
+        User user = BeanHandler.converUser(rs).get(0);
+        DbUtil.close(connection,pstmt,rs);
         return user;
     }
 
@@ -109,8 +90,7 @@ public class UserDaoImpl implements UserDao {
             userList.add(user);
         }
         return userList;
-
-        }
+    }
 
     @Override
     public int insert(UserDto userDto) throws SQLException {
@@ -125,5 +105,30 @@ public class UserDaoImpl implements UserDao {
      return n;
     }
 
+    @Override
+    public List<User> selectHotUsers() throws SQLException {
+       Connection connection = DbUtil.getConnection();
+       String sql = "SELECT * FROM t_user ORDER BY fans DESC LIMIT 10 ";
+       PreparedStatement pst = connection.prepareStatement(sql);
+       ResultSet rs = pst.executeQuery();
+       List<User> userList = BeanHandler.converUser(rs);
+       DbUtil.close(connection,pst,rs);
+        return  userList;
+    }
+
+    @Override
+    public UserVo getUser(long id) throws SQLException {
+        Connection connection  =   DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user WHERE id = ?";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setLong(1,id);
+        ResultSet rs = pst.executeQuery();
+        UserVo userVo = new UserVo();
+        User user = BeanHandler.converUser(rs).get(0);
+        userVo.setUser(user);
+        DbUtil.close(connection,pst,rs);
+        return  userVo;
+
+    }
 }
 

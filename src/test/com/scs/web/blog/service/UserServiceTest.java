@@ -2,6 +2,7 @@ package com.scs.web.blog.service;
 
 import com.scs.web.blog.domain.UserDto;
 import com.scs.web.blog.factory.ServiceFactory;
+import com.scs.web.blog.util.Result;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -13,15 +14,12 @@ public class UserServiceTest {
     private  UserService userService = ServiceFactory.getUserServiceInstance();
     @Test
     public void signIn() {
-        UserDto userDto = new UserDto("13923554302","bfa010ab6c01e42b2e86aa0e26f21d4f");
-        Map<String,Object> map = userService.signIn(userDto);
-        System.out.println(map.get("data"));
+        UserDto userDao = new UserDto();
+        userDao.setMobile("18094246920");
+        userDao.setPassword("111111");
+        Result result = userService.signIn(userDao);
+        System.out.println("code:" + result.getCode() + "," + "msg:" + result.getMsg());
     }
 
-    @Test
-    public void signUp() throws SQLException {
-        UserDto userDto = new UserDto("13923554303","1111111");
-        Map<String,Object> map = userService.signUp(userDto);
-        System.out.println(map.get("msg"));
-    }
+
 }
