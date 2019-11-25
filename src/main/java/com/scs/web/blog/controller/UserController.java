@@ -49,15 +49,69 @@ public class UserController extends HttpServlet {
         return uri.substring(len);
     }
 
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI().trim();
+        if ("/api/user".equals(uri)) {
+            String page = req.getParameter("page");
+            String keywords = req.getParameter("keywords");
+            String count = req.getParameter("count");
+            if (page != null) {
+                getUsersByPage(resp, Integer.parseInt(page), Integer.parseInt(count));
+            } else if (keywords != null) {
+                getUsersByKeywords(resp, keywords);
+            } else {
+                getHotUsers(req, resp);
+            }
+        } else {
+            getUser(req, resp);
+        }
+    }
+    private void getHotUsers(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.getHotUsers();
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+    private void getUsersByPage(HttpServletResponse resp, int page, int count) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.selectByPage(page, count);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+    private void getUsersByKeywords(HttpServletResponse resp, String keywords) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.selectByKeywords(keywords);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
+
+
+    private void getUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String info = req.getPathInfo().trim();
+        //取得路径参数
+        String id = info.substring(info.indexOf("/") + 1);
+        Gson gson = new GsonBuilder().create();
+        Result result = userService.getUser(Long.parseLong(id));
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       String uri = req.getRequestURI().trim();
-       if("api/user/sign-in".equals(uri)){
-           signIn(req,resp);
-       }else if("api/user/sign-up".equals(uri)){
-           signUp(req,resp);
-       }
+        String uri = req.getRequestURI().trim();
+        if ("/api/user/sign-in".equals(uri)) {
+            signIn(req, resp);
+        } else if ("/api/user/sign-up".equals(uri)) {
+            signUp(req, resp);
+        } else if ("/api/user/check".equals(uri)) {
+            check(req, resp);
+        }
     }
 
     private void check(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -65,7 +119,8 @@ public class UserController extends HttpServlet {
     }
 
 
-    protected void signIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    private void  signIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         StringBuilder stringBuilder = new StringBuilder();
         String line = null;

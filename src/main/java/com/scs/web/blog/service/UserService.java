@@ -35,5 +35,13 @@ public interface UserService {
     * 根据id查询用户详情数据
     * */
     Result getUser(long id);
+    /*
+    获取分页用户信息
+    */
+    Result selectByPage(int currentPage,int count);
+    /*
+    * 根据昵称或简介模糊搜索用户
+    * */
+    Result selectByKeywords(String keywords);
 
 }

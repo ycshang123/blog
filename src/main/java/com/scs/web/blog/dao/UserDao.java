@@ -37,4 +37,12 @@ public interface UserDao {
     * 根据id查询用户
     * */
     UserVo getUser(long id) throws SQLException;
+    /*
+    * 查询分页用户
+    * */
+    List<User> selectByPage(int currentPage ,int count) throws  SQLException;
+    /*
+    * 模糊搜索用户
+    * */
+    List<User> selectByKeywords(String keywords) throws  SQLException;
 }

@@ -9,6 +9,7 @@ import com.scs.web.blog.service.ArticleService;
 //import com.scs.web.blog.service.Impl.ArticleServiceImpl;
 import com.scs.web.blog.service.Impl.ArticleServiceImpl;
 import com.scs.web.blog.service.Impl.StudentServiceImpl;
+import com.scs.web.blog.service.Impl.TopicServiceImpl;
 import com.scs.web.blog.service.Impl.UserServiceImpl;
 import com.scs.web.blog.service.StudentService;
 import com.scs.web.blog.service.UserService;
@@ -25,5 +26,8 @@ public class ServiceFactory {
     public  static ArticleService getArticleServiceInstance(){
 
         return  new ArticleServiceImpl();
+    }
+    public static TopicServiceImpl getTopicServiceInstance(){
+        return  new TopicServiceImpl();
     }
 }

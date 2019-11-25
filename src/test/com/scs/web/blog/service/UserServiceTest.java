@@ -22,4 +22,9 @@ public class UserServiceTest {
     }
 
 
+    @Test
+    public void getHotUsers() {
+        Result result = userService.getHotUsers();
+        System.out.println(result);
+    }
 }

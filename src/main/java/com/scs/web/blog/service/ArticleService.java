@@ -24,4 +24,12 @@ public interface ArticleService {
     * 获取文章详情
     * */
     Result getArticle(long id);
+    /*
+    * 获取分页文章
+    * */
+    Result getArticleByPage(int currentPage,int count);
+    /*
+    * 根据标题或摘要模糊查询文章
+    * */
+    Result selectByKeywords(String keywords);
 }

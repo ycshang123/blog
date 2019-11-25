@@ -1,7 +1,9 @@
 package com.scs.web.blog.util;
 
 import com.scs.web.blog.entity.Article;
+import com.scs.web.blog.entity.Topic;
 import com.scs.web.blog.entity.User;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,6 +28,7 @@ import java.util.Random;
 public class JSoupSpider {
     private static Logger logger = LoggerFactory.getLogger(JSoupSpider.class);
     private static Logger log = LoggerFactory.getLogger(JSoupSpider.class);
+    private static final int PAGE_COUNT = 1;
 
     public static List<Article> getArticle(){
         Document document = null;
@@ -69,6 +72,7 @@ public class JSoupSpider {
                 article.setComments(Integer.valueOf(number));
                 article.setDiamond(new Random().nextInt(100));
                 article.setUserid(DataUtil.getUserId());
+                article.setTpyeid(DataUtil.getTopicId());
                 articleList.add(article);
             });
             j++;
@@ -105,6 +109,46 @@ public class JSoupSpider {
             });
         }
         return userList;
+    }
+    /*爬取简书网的专题*/
+    public static List<Topic> getTopics() {
+        List<Topic> topicList = new ArrayList<>(100);
+        Connection connection;
+        Document document = null;
+        for (int i = 1; i <= PAGE_COUNT; i++) {
+            try {
+                //分析页面得到url和惨
+                connection = Jsoup.connect("https://www.jianshu.com/recommendations/collections?order_by=hot&page=" + i);
+                //通过chrome开发者工具查看该请求必须添加请求头
+                connection.header("X-PJAX", "true");
+                document = connection.get();
+            } catch (IOException e) {
+                logger.error("连接失败");
+            }
+            assert document != null;
+            Elements list = document.select(".collection-wrap");
+            list.forEach(item -> {
+                Elements elements = item.children();
+                Topic topic = new Topic();
+                Element link = elements.select("a").get(0);
+                Element logo = link.child(0);
+                Element name = link.child(1);
+                Element description = link.child(2);
+                Element articles = elements.select(".count > a").get(0);
+                Element follows = elements.select(".count > a").get(0);
+                topic.setAdminId(1L);
+                topic.setTopicName(name.text());
+                topic.setLogo(logo.attr("src"));
+                topic.setDescription(description.text());
+                String[] str = StringUtil.getDigital(articles.text());
+                topic.setArticles(Integer.parseInt(str[0]));
+                str = StringUtil.getDigital(follows.text());
+                topic.setFollows(Integer.parseInt(str[0]));
+                topic.setCreateTime(DataUtil.getCreateTime());
+                topicList.add(topic);
+            });
+        }
+        return topicList;
     }
 
 

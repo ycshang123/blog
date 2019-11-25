@@ -27,13 +27,13 @@ public class ImageUtil {
         return img;
     }
 
-    public static void main(String[] args)  throws IOException {
-        //生成验证码
-        String code =StringUtil.getRandomString(4);
-        //生成图片
-        BufferedImage img = ImageUtil.getImage(code,200,100);
-        //将img通过字节输出流输出到指定目录
-        File file = new File("D:/code.jpg");
-        ImageIO.write(img,"jpg",file);
-    }
+//    public static void main(String[] args)  throws IOException {
+//        //生成验证码
+//        String code =StringUtil.getRandomString(4);
+//        //生成图片
+//        BufferedImage img = ImageUtil.getImage(code,200,100);
+//        //将img通过字节输出流输出到指定目录
+//        File file = new File("D:/code.jpg");
+//        ImageIO.write(img,"jpg",file);
+//    }
 }

@@ -31,5 +31,20 @@ public interface ArticleDao {
     * 根据id查找图书
     * */
     ArticleVo getArticle(long id) throws SQLException;
-
+    /*
+    * 根据作者id查询所有文章
+    * */
+    List<ArticleVo> selectByUserId(long userId) throws  SQLException;
+    /*
+    * 根据专题id查询所有文章
+    * */
+    List<ArticleVo> selectByTopicId(long topicId) throws  SQLException;
+    /*
+    * 分页获得文章数据
+    * */
+    List<ArticleVo> selectByPage(int currentPage,int count) throws SQLException;
+    /*
+    * 根据关键字模糊查询所有文章
+    * */
+    List<ArticleVo> selectByKeywords(String keywords) throws  SQLException;
 }

@@ -25,7 +25,7 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public int[] batchInsert(List<Article> articleList) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "INSERT INTO t_article(title,intro,cover,diamond,nickname,comments,likes,publish_time,user_id,content) VALUES (?,?,?,?,?,?,?,?,?,?) ";
+        String sql = "INSERT INTO t_article(title,intro,cover,diamond,bookname,comments,likes,publish_time,user_id,type_id,content) VALUES (?,?,?,?,?,?,?,?,?,?,?) ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         connection.setAutoCommit(false);
         articleList.forEach(article -> {
@@ -39,7 +39,8 @@ public class ArticleDaoImpl implements ArticleDao {
                 pstmt.setInt(7, article.getLikes());
                 pstmt.setObject(8, article.getPublishtime());
                 pstmt.setInt(9, article.getUserid());
-                pstmt.setString(10, article.getContent());
+                pstmt.setInt(10,article.getTpyeid());
+                pstmt.setString(11, article.getContent());
                 pstmt.addBatch();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -80,11 +81,15 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public List<ArticleVo> selectHotArticles() throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "SELECT a.*,b.nickname,b.avatar " +
+        String sql = "SELECT a.*," +
+                "b.topic_name,b.logo,c.nickname,c.avatar " +
                 "FROM t_article a " +
-                "LEFT JOIN t_user b " +
-                "ON a.user_id = b.id " +
-                "ORDER BY a.diamond DESC LIMIT 10";
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id " +
+                "ORDER BY a.diamond DESC " +
+                "LIMIT 10 ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
         //调用封装方法，将结果解析成List
@@ -96,11 +101,13 @@ public class ArticleDaoImpl implements ArticleDao {
     @Override
     public ArticleVo getArticle(long id) throws SQLException {
         Connection connection = DbUtil.getConnection();
-        String sql = "SELECT a.*,b.nickname,b.avatar " +
+        String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
                 "FROM t_article a " +
-                "LEFT JOIN t_user b " +
-                "ON a.user_id = b.id " +
-                "WHERE a.id =? ";
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id " +
+                "WHERE a.id = ?  ";
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setLong(1, id);
         ResultSet rs = pstmt.executeQuery();
@@ -108,5 +115,82 @@ public class ArticleDaoImpl implements ArticleDao {
         rs.previous();
         DbUtil.close(connection,pstmt,rs);
         return articleVo;
+    }
+
+    @Override
+    public List<ArticleVo> selectByUserId(long userId) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        //从文章、专题、用户表联查出前端需要展示的数据
+        String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
+                "FROM t_article a " +
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id " +
+                "WHERE a.user_id = ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setLong(1, userId);
+        ResultSet rs = pst.executeQuery();
+        List<ArticleVo> articleVos = BeanHandler.converArticle(rs);
+        DbUtil.close(connection, pst, rs);
+        return articleVos;
+    }
+
+    @Override
+    public List<ArticleVo> selectByTopicId(long topicId) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        //从文章、专题、用户表联查出前端需要展示的数据
+        String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
+                "FROM t_article a " +
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id " +
+                "WHERE a.topic_id = ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setLong(1, topicId);
+        ResultSet rs = pst.executeQuery();
+        List<ArticleVo> articleVos =  BeanHandler.converArticle(rs);
+        DbUtil.close(connection, pst, rs);
+        return articleVos;
+    }
+
+    @Override
+    public List<ArticleVo> selectByPage(int currentPage, int count) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
+                "FROM t_article a " +
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id  LIMIT ?,? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1, (currentPage - 1) * count);
+        pst.setInt(2, count);
+        ResultSet rs = pst.executeQuery();
+        List<ArticleVo> articleVos =  BeanHandler.converArticle(rs);
+        DbUtil.close(connection, pst, rs);
+        return articleVos;
+    }
+
+    @Override
+    public List<ArticleVo> selectByKeywords(String keywords) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        //从文章、专题、用户表联查出前端需要展示的数据
+        String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
+                "FROM t_article a " +
+                "LEFT JOIN t_topic b " +
+                "ON a.type_id = b.id " +
+                "LEFT JOIN t_user c " +
+                "ON a.user_id = c.id " +
+                "WHERE a.title LIKE ?  OR a.intro LIKE ? ";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, "%" + keywords + "%");
+        pst.setString(2, "%" + keywords + "%");
+        ResultSet rs = pst.executeQuery();
+        List<ArticleVo> articleVos =BeanHandler.converArticle(rs);
+        DbUtil.close(connection, pst, rs);
+        return articleVos;
+
     }
 }

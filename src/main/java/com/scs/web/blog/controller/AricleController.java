@@ -33,16 +33,28 @@ public class AricleController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = req.getRequestURI().trim();
-        if("/api/article".equals(uri)){
+        if ("/api/article".equals(uri)) {
             String page = req.getParameter("page");
-            if(page !=null){
-                getArticlesByPage(req,resp);
-            }else {
-                getHotArticles(req,resp);
+            String keywords = req.getParameter("keywords");
+            String count = req.getParameter("count");
+            if (page != null) {
+                getArticlesByPage(resp, Integer.parseInt(page), Integer.parseInt(count));
+            } else if (keywords != null) {
+                getArticlesByKeywords(resp, keywords);
+            } else {
+                getHotArticles(req, resp);
             }
-        }else {
-            getArticle(req,resp);
+        } else {
+            getArticle(req, resp);
         }
+    }
+
+    private void getArticlesByKeywords(HttpServletResponse resp, String keywords) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = articleService.selectByKeywords(keywords);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
     }
 
     private void getArticle(HttpServletRequest req, HttpServletResponse resp)throws  ServletException, IOException {
@@ -65,21 +77,12 @@ public class AricleController extends HttpServlet {
     }
 
 
-    private void getArticlesByPage(HttpServletRequest req, HttpServletResponse resp) {
-    }
-
-    protected void getAllArticle(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Article> articleList = articleService.listArticle();
-        ResponseObject ro = null;
-    if(resp.getStatus() ==200){
-        ro = ResponseObject.success(200,"成功",articleList);
-    }else{
-        ro = ResponseObject.error(resp.getStatus(),"失败");
-    }
-    PrintWriter out = resp.getWriter();
-    Gson gson = new GsonBuilder().create();
-    out.print(gson.toJson(ro));
-    out.close();
+    private void getArticlesByPage( HttpServletResponse resp,int page, int count) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        Result result = articleService.getArticleByPage(page,count);
+        PrintWriter out = resp.getWriter();
+        out.print(gson.toJson(result));
+        out.close();
     }
 
     @Override

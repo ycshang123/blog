@@ -10,8 +10,10 @@ import com.scs.web.blog.dao.ArticleDao;
 
 import com.scs.web.blog.dao.Impl.ArticleDaoImpl;
 import com.scs.web.blog.dao.Impl.StudentDaoImpl;
+import com.scs.web.blog.dao.Impl.TopicDaoImpl;
 import com.scs.web.blog.dao.Impl.UserDaoImpl;
 import com.scs.web.blog.dao.StudentDao;
+import com.scs.web.blog.dao.TopicDao;
 import com.scs.web.blog.dao.UserDao;
 import com.scs.web.blog.entity.Article;
 
@@ -26,6 +28,9 @@ public class DaoFactory {
     }
     public  static ArticleDao getArticleDaoInstance(){
         return  new ArticleDaoImpl();
+    }
+    public  static TopicDao getTopicDaoInstance(){
+        return  new TopicDaoImpl();
     }
 
 }

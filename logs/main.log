@@ -1,2 +1,2 @@
-2019-11-24.09:55:40 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常
-2019-11-24.09:56:48 ERROR [main] com.scs.web.blog.util.BeanHandler.converArticle:75  文章数据结果集解析异常
+2019-11-25.11:10:26 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:28  批量图书增加成功
+2019-11-25.11:13:19 INFO  [main] com.scs.web.blog.dao.ArticleDaoTest.batchInsert:28  批量图书增加成功

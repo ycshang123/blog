@@ -18,9 +18,6 @@ public class ArticleServiceTest {
 
     }
 
-    @Test
-    public void getArticle() {
-    }
 
     @Test
     public void getHotArticles() {

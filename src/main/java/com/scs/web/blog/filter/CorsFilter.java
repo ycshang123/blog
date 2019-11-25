@@ -19,7 +19,7 @@ public class CorsFilter implements Filter {
     private static Logger logger = LoggerFactory.getLogger(CorsFilter.class);
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res,  FilterChain chain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
@@ -32,15 +32,16 @@ public class CorsFilter implements Filter {
         chain.doFilter(req, res);
     }
 
-
     @Override
-    public void init(FilterConfig filterConfig) {
+    public void init(FilterConfig filterConfig) throws ServletException {
         logger.info("跨域过滤器初始化");
     }
 
     @Override
     public void destroy() {
         logger.info("跨域过滤器销毁");
+
     }
+
 
 }

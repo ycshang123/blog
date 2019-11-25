@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDaoTest {
     private static Logger logger = LoggerFactory.getLogger(UserDaoTest.class);
@@ -31,7 +32,7 @@ public class UserDaoTest {
 
     @Test
     public void findUserByMobile() throws SQLException {
-        User user = new UserDaoImpl().findUserByMobile("13972475335");
+        User user = new UserDaoImpl().findUserByMobile("18094246920");
         if (user != null){
             System.out.println("ok");
         }else {
@@ -39,6 +40,21 @@ public class UserDaoTest {
         }
 
     }
+
+
+    @Test
+    public void selectHotUsers() throws SQLException {
+        List<User> userList = userDao.selectHotUsers();
+        System.out.println(userList);
+
+    }
+
+    @Test
+    public void selectByKeywords() throws SQLException {
+        List<User> userList = userDao.selectByKeywords("简");
+        System.out.println(userList.size());
+    }
+
 
 
 }

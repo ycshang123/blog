@@ -74,6 +74,11 @@ public class DataUtil {
         int number = random.nextInt(72);
         return number;
     }
+    public static int getTopicId() {
+        Random random = new Random();
+        int bound = random.nextInt(21);
+        return bound;
+    }
 
 //    public static void main(String[] args) {
 //        for(int i = 0;i<10;i++) {

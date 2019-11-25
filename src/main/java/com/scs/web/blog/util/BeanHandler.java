@@ -8,6 +8,7 @@ package com.scs.web.blog.util;
 
 import com.scs.web.blog.domain.Vo.ArticleVo;
 import com.scs.web.blog.entity.Article;
+import com.scs.web.blog.entity.Topic;
 import com.scs.web.blog.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,26 @@ public class BeanHandler {
        }
      return  userList;
     }
+    public static List<Topic> convertTopic(ResultSet rs) {
+        List<Topic> topicList = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                Topic topic = new Topic();
+                topic.setId(rs.getLong("id"));
+                topic.setAdminId(rs.getLong("admin_id"));
+                topic.setTopicName(rs.getString("topic_name"));
+                topic.setLogo(rs.getString("logo"));
+                topic.setDescription(rs.getString("description"));
+                topic.setArticles(rs.getInt("articles"));
+                topic.setFollows(rs.getInt("follows"));
+                topic.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
+                topicList.add(topic);
+            }
+        } catch (SQLException e) {
+            logger.error("专题数据结果集解析产生异常");
+        }
+        return topicList;
+    }
     public  static List<ArticleVo> converArticle(ResultSet rs){
         List<ArticleVo> articleVoList = new ArrayList<>();
         try {
@@ -66,12 +87,20 @@ public class BeanHandler {
                 article.setContent(rs.getString("content"));
                 //作者信息
                 User author = new User();
-//                author.setId(rs.getLong("id"));
+                author.setId(rs.getLong("id"));
                 author.setNickname(rs.getString("nickname"));
                 author.setAvatar(rs.getString("avatar"));
+
+                //专题信息
+                Topic topic = new Topic();
+                topic.setId(rs.getLong("id"));
+                topic.setTopicName(rs.getString("topic_name"));
+                topic.setLogo(rs.getString("logo"));
+
                 //给文章视图对象设置三块内容
                 articleVo.setArticle(article);
                 articleVo.setAuthor(author);
+                articleVo.setTopic(topic);
                 articleVoList.add(articleVo);
             }
         }catch (SQLException e){

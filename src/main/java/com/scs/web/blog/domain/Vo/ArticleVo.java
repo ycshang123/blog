@@ -16,6 +16,6 @@ import java.time.LocalDateTime;
 @Data
 public class ArticleVo {
     private Article article;
-   private User author;
-//   private Topic topic;
+    private User author;
+    private Topic topic;
 }

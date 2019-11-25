@@ -5,8 +5,10 @@ package com.scs.web.blog.entity;/*@ClassName Topic
  *@Version 1.0
  **/
 
-import java.time.LocalDateTime;
+import lombok.Data;
 
+import java.time.LocalDateTime;
+@Data
 public class Topic {
     private  Long id;
     private Long adminId;

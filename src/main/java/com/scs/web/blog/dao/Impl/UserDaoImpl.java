@@ -12,6 +12,7 @@ import com.scs.web.blog.domain.Vo.UserVo;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.util.BeanHandler;
 import com.scs.web.blog.util.DbUtil;
+import com.scs.web.blog.util.Result;
 
 import javax.swing.plaf.synth.ColorType;
 import java.sql.Connection;
@@ -49,6 +50,31 @@ public class UserDaoImpl implements UserDao {
         connection.commit();
        DbUtil.close(connection,pstmt);
         return  result;
+    }
+
+    @Override
+    public List<User> selectByKeywords(String keywords) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user WHERE nickname LIKE ? OR introduction LIKE ?";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1,"%"+keywords+"%");
+        pst.setString(2,"%"+keywords+"%");
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.converUser(rs);
+        DbUtil.close(connection,pst,rs);
+        return userList;
+    }
+
+    @Override
+    public List<User> selectByPage(int currentPage, int count) throws SQLException {
+        Connection connection = DbUtil.getConnection();
+        String sql = "SELECT * FROM t_user LIMIT ?,?" ;
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setInt(1,(currentPage -1) *count);
+        pst.setInt(2,count);
+        ResultSet rs = pst.executeQuery();
+        List<User> userList = BeanHandler.converUser(rs);
+        return userList;
     }
 
     @Override
