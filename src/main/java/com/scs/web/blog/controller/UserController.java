@@ -108,7 +108,7 @@ public class UserController extends HttpServlet {
         if ("/api/user/sign-in".equals(uri)) {
             signIn(req, resp);
         } else if ("/api/user/sign-up".equals(uri)) {
-            signUp(req, resp);
+//            signUp(req, resp);
         } else if ("/api/user/check".equals(uri)) {
             check(req, resp);
         }
@@ -123,7 +123,7 @@ public class UserController extends HttpServlet {
     private void  signIn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         BufferedReader reader = req.getReader();
         StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
+        String line;
         while((line = reader.readLine())!= null){
             stringBuilder.append(line);
         }
@@ -134,6 +134,7 @@ public class UserController extends HttpServlet {
 
       //从客户端请求头里带来的token
         String sessionId = req.getHeader("Access-Token");
+        System.out.println("aaa");
         System.out.println("客户端传来的JSESSIONID"+sessionId);
         MySessionContext myc = MySessionContext.getInstance();
         HttpSession session = myc.getSession(sessionId);
@@ -153,29 +154,29 @@ public class UserController extends HttpServlet {
     public void init() throws ServletException {
         logger.info("UserController初始化");
     }
-    private  void signUp(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
-        BufferedReader reader = req.getReader();
-        StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
-        while((line = reader.readLine())!=null){
-          stringBuilder.append(line);
-        }
-        logger.info("注册用户信息"+stringBuilder.toString());
-        Gson gson = new GsonBuilder().create();
-        UserDto userDto = gson.fromJson(stringBuilder.toString(),UserDto.class);
-        Map<String,Object> map = userService.signUp(userDto);
-        String msg = (String)map.get("msg");
-        ResponseObject ro;
-        if(msg.equals("注册成功")){
-            ro= ResponseObject.success(200,msg);
-        }else {
-            ro = ResponseObject.success(200, msg);
-        }
-        PrintWriter out =resp.getWriter();
-        out.print(gson.toJson(ro));
-        out.close();
-
-    }
+//    private  void signUp(HttpServletRequest req,HttpServletResponse resp) throws ServletException, IOException {
+//        BufferedReader reader = req.getReader();
+//        StringBuilder stringBuilder = new StringBuilder();
+//        String line = null;
+//        while((line = reader.readLine())!=null){
+//          stringBuilder.append(line);
+//        }
+//        logger.info("注册用户信息"+stringBuilder.toString());
+//        Gson gson = new GsonBuilder().create();
+//        UserDto userDto = gson.fromJson(stringBuilder.toString(),UserDto.class);
+//        Map<String,Object> map = userService.signUp(userDto);
+//        String msg = (String)map.get("msg");
+//        ResponseObject ro;
+//        if(msg.equals("注册成功")){
+//            ro= ResponseObject.success(200,msg);
+//        }else {
+//            ro = ResponseObject.success(200, msg);
+//        }
+//        PrintWriter out =resp.getWriter();
+//        out.print(gson.toJson(ro));
+//        out.close();
+//
+//    }
 
     }
 

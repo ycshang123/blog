@@ -137,7 +137,7 @@ public class ArticleDaoImpl implements ArticleDao {
     }
 
     @Override
-    public List<ArticleVo> selectByTopicId(long topicId) throws SQLException {
+    public List<ArticleVo> selectByTopicId(long typeId) throws SQLException {
         Connection connection = DbUtil.getConnection();
         //从文章、专题、用户表联查出前端需要展示的数据
         String sql = "SELECT a.*,b.topic_name,b.logo,c.nickname,c.avatar " +
@@ -146,9 +146,9 @@ public class ArticleDaoImpl implements ArticleDao {
                 "ON a.type_id = b.id " +
                 "LEFT JOIN t_user c " +
                 "ON a.user_id = c.id " +
-                "WHERE a.topic_id = ? ";
+                "WHERE a.type_id = ? ";
         PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setLong(1, topicId);
+        pst.setLong(1, typeId);
         ResultSet rs = pst.executeQuery();
         List<ArticleVo> articleVos =  BeanHandler.converArticle(rs);
         DbUtil.close(connection, pst, rs);

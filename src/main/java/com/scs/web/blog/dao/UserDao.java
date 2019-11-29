@@ -22,10 +22,6 @@ public interface UserDao {
     * */
     User findUserByMobile(String mobile) throws  SQLException;
     /*
-    * 获取作者
-    * */
-    List<User> sellectAll() throws  SQLException;
-    /*
     * 注册用户
     * */
     int insert(UserDto userDto) throws  SQLException;

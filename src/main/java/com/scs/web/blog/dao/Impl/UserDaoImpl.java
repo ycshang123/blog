@@ -12,7 +12,9 @@ import com.scs.web.blog.domain.Vo.UserVo;
 import com.scs.web.blog.entity.User;
 import com.scs.web.blog.util.BeanHandler;
 import com.scs.web.blog.util.DbUtil;
-import com.scs.web.blog.util.Result;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.plaf.synth.ColorType;
 import java.sql.Connection;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
+    private static Logger loggger = LoggerFactory.getLogger(UserDaoImpl.class);
     @Override
     public int[] batchInsert(List<User> userList) throws SQLException {
         Connection connection = DbUtil.getConnection();
@@ -89,34 +92,6 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    @Override
-    public List<User> sellectAll() throws SQLException {
-        List<User> userList = new ArrayList<>();
-        Connection connection = DbUtil.getConnection();
-        connection.setAutoCommit(false);
-        String sql = "SELECT * FROM t_user ORDER  BY id DESC";
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        ResultSet rs = pstmt.executeQuery();
-        while ((rs.next())) {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setMobile(rs.getString("mobile"));
-            user.setPassword(rs.getString("password"));
-            user.setNickname(rs.getString("nickname"));
-            user.setAvatar(rs.getString("avatar"));
-            user.setGender(rs.getString("gender"));
-            user.setBirthday(rs.getDate("birthday").toLocalDate());
-            user.setIntroduction(rs.getString("introduction"));
-            user.setAddress(rs.getString("address"));
-            user.setFollows(rs.getShort("follows"));
-            user.setFans(rs.getShort("fans"));
-            user.setArticles(rs.getShort("articles"));
-            user.setCreateTime(rs.getTimestamp("create_time").toLocalDateTime());
-            user.setStatus(rs.getShort("status"));
-            userList.add(user);
-        }
-        return userList;
-    }
 
     @Override
     public int insert(UserDto userDto) throws SQLException {

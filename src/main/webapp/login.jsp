@@ -12,7 +12,7 @@
 </head>
 <body>
 <img src ="/code" alt="">
-<form action="/login"  method="post">
+<form action="/api/login"  method="post">
     <label>
         <input type="text" name="code">
     </label>

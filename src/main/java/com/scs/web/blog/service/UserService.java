@@ -20,13 +20,9 @@ public interface UserService {
     * */
     Result signIn(UserDto userDto);
     /*
-    *获取作者
-    * */
-    List<User>  listUser();
-    /*
     * 注册功能
     * */
-    Map<String,Object> signUp(UserDto userDto);
+    Result signUp(UserDto userDto);
     /*
     * 获取热门用户信息
     * */

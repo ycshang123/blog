@@ -13,27 +13,20 @@ import java.io.File;
 import java.io.IOException;
 
 //将字符串绘制成指定大小的图片
+
+
 public class ImageUtil {
-    public static BufferedImage getImage(String content,int width,int height){
-        BufferedImage img = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = (Graphics2D)img.getGraphics();
-        Color foreColor = Color.DARK_GRAY;
-        g.setColor(new Color(26,160,52));
-        g.drawRect(0,0,200,100);
-        g.setBackground(new Color(0,0,0));
-        Font font =new Font("楷体",Font.BOLD,30);
-        g.setFont(font);
-        g.drawString(content,width/3,height/3);
+    public static BufferedImage getImage(int width, int height, String content) {
+        BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics = (Graphics2D) img.getGraphics();
+        graphics.setColor(new Color(68, 134, 49));
+        graphics.fillRect(0, 0, width, height);
+        graphics.setPaint(new Color(60, 63, 65));
+        Font font = new Font("微软雅黑", Font.BOLD, 40);
+        graphics.setFont(font);
+        graphics.drawString(content, width / 3, height / 2);
+        graphics.rotate(1.5);
         return img;
     }
 
-//    public static void main(String[] args)  throws IOException {
-//        //生成验证码
-//        String code =StringUtil.getRandomString(4);
-//        //生成图片
-//        BufferedImage img = ImageUtil.getImage(code,200,100);
-//        //将img通过字节输出流输出到指定目录
-//        File file = new File("D:/code.jpg");
-//        ImageIO.write(img,"jpg",file);
-//    }
 }

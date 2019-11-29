@@ -53,34 +53,27 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public List<User> listUser() {
-        List<User> userList = new ArrayList<>();
-        try {
-            userList = userDao.sellectAll();
-        } catch (SQLException e) {
-            logger.error("用户获取信息失败");
-        }
-        logger.info("作者信息获取成功");
-        return userList;
-    }
 
     @Override
-    public Map<String, Object> signUp(UserDto userDto) {
-        Map<String, Object> map = new HashMap<>();
-        int i = 0;
+    public Result signUp(UserDto userDto) {
+       User user;
+       int i =0;
         try {
-            i = DaoFactory.getUserDaoInstance().insert(userDto);
+            user = userDao.findUserByMobile(userDto.getMobile());
+            if(user !=null){
+                return  Result.success(ResultCode.USER_HAS_EXISTED);
+            }else{
+              i = userDao.insert(userDto);
+              if(i!=0){
+                  logger.info("注册成功");
+              }else{
+                  logger.error("注册失败");
+              }
+            }
         } catch (SQLException e) {
-            logger.error("注册失败");
+            e.printStackTrace();
         }
-        if (i == 1) {
-          map.put("msg","注册成功");
-        } else {
-           map.put("msg","注册失败");
-        }
-
-        return map;
+        return Result.success();
     }
 
     @Override
